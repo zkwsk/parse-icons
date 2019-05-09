@@ -17,6 +17,8 @@ Tool to help you migrate from Fontawesome 4.x to 5.x using tree-shaking to cherr
 
 2. Run `npm run` to generate a file in the output folder containing import statements and an object that will map all of your icons so it's possible to iterate over them and import them into the Font Awesome 5 library.
 
+3. There are a couple of constants in parser.js that allows you to choose whether you want to output to the console or to a file.
+
 ## What does it do?
 
 - Removes font-awesome "utility classes" which are not actually icons (i.e. `fa-2x`, `fa-stack`, etc. - see the `blackList` object in parser.js for details)

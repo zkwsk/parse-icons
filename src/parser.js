@@ -60,12 +60,6 @@ const importTemplate = function(iconAttributes) {
   )} } from '@fortawesome/pro-${prefix}-svg-icons';`;
 };
 
-const objectMapTemplate = function(icon) {
-  const camelName = camelCase(icon.cssClass);
-
-  return `  ${camelCase(icon.newName)}: ${camelName}Solid,`;
-};
-
 const getUpgradeData = function(iconName) {
   return upgradeTable.find(element => element.oldName === iconName);
 };
@@ -105,7 +99,7 @@ const addToObjectMap = iconAttributes => {
 
 const parseIcons = function() {
   let output = "";
-  let importStatements = "";
+  let importStatements = [];
   let objectMap = "";
 
   // Remove blacklisted icons
@@ -114,38 +108,28 @@ const parseIcons = function() {
   // Write import statements.
   icons.map(icon => {
     const attributes = getIconAttributes(icon);
-    importStatements += `${importTemplate(attributes)} \n`;
+    importStatements.push(`${importTemplate(attributes)} \n`);
 
-    //console.log(attributes);
-
+    // Add to object map so we are sure to reference the import.
     addToObjectMap(attributes);
-    //iconList.solid[camelCase(attributes.newName)] =
-    //`${camelCase(attributes.newName.replace("fa-", ""))}Solid`;
   });
 
-  // Write object map
+  // Prune duplicate import statements
+  const importStatementsUnique = [...new Set(importStatements)];
 
+  // Write object map
   objectMap = `iconList.solid = ${JSON.stringify(iconList.solid, null, 2)}`;
   objectMap += "\n\n";
   objectMap += `iconList.brands = ${JSON.stringify(iconList.brands, null, 2)}`;
 
-  // icons.map(icon => {
-  //   const attributes = getIconAttributes(icon);
-  //   objectMap += `${objectMapTemplate(attributes)} \n`;
-
-  //   console.log(attributes.newName);
-
-  //   solid[attributes.newName] = `${attributes.newName}Solid`;
-  // });
-
   // Stitch together the import statements and object map
-  output = `${importStatements}\n\n${objectMap}`;
+  output = `${importStatementsUnique.join()}\n\n${objectMap}`;
 
   if (writeFile) {
     var today = new Date();
 
     fs.writeFile(
-      `output/output-${today.toISOString().substring(0, 10)}.js`,
+      `output/output-${today.toISOString().substring(0, 19)}.js`,
       output,
       err => {
         if (err) {
