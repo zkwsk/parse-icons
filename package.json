@@ -1,0 +1,21 @@
+{
+  "name": "parse-icons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/parser.js",
+  "scripts": {
+    "start": "node src/parser.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "camelcase": "^5.3.1",
+    "html-table-to-json": "^0.4.0",
+    "node-html-parser": "^1.1.15"
+  },
+  "devDependencies": {
+    "titleize": "^2.1.0"
+  }
+}
